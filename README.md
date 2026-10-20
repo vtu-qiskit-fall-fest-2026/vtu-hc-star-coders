@@ -307,6 +307,6 @@ Released under the [MIT License](LICENSE). See `LICENSE` for details.
 **Star coders** · Team ID `VTU-QFF-HC-0013` · Tier `Both`
 · Built with ⚛️ Qiskit for the VTU-QFF Hackathon
 
-[⬆ Back to Top](#Star coders)
+[⬆ Back to Top](#star-coders)
 
 </div>
