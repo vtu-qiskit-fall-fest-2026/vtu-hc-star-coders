@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#a10f2b">
+<title>BloodConnect India | Find blood, help save lives</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--red:#a10f2b;--red2:#d62845;--ink:#18212f;--muted:#647184;--bg:#f7f8fb;--line:#e6e9ef;--green:#16794b}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+header{background:linear-gradient(120deg,#870b24,#c51e3a);color:white;padding:18px max(18px,calc((100% - 1160px)/2));}
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}.brand{font-size:1.35rem;font-weight:850;letter-spacing:-.4px}.brand span{color:#ffd9df}
+.lang{padding:10px;border:1px solid #ffffff70;border-radius:10px;background:#fff;color:#202938;max-width:100%;font-size:1rem}
+.hero{max-width:1160px;margin:0 auto;padding:34px 18px 24px}.hero h1{font-size:clamp(2rem,5vw,3.35rem);line-height:1.08;margin:0 0 14px;max-width:760px}.hero p{font-size:1.08rem;max-width:740px;color:#fff0f2;margin:0 0 20px}
+.pills{display:flex;gap:8px;flex-wrap:wrap}.pill{background:#ffffff20;border:1px solid #ffffff55;border-radius:999px;padding:7px 12px;font-size:.9rem}
+main{max-width:1160px;margin:0 auto;padding:22px 18px 50px}.alert{background:#fff5e7;border:1px solid #f4d49c;border-radius:14px;padding:13px 15px;margin-bottom:20px;color:#63430b}.alert strong{display:block;margin-bottom:3px}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 5px 18px #17243a08}.panel h2{margin:0 0 5px;font-size:1.25rem}.sub{color:var(--muted);font-size:.94rem;margin:0 0 16px}
+label{display:block;font-weight:700;font-size:.93rem;margin:12px 0 6px}input,select,button{font:inherit}input,select{width:100%;padding:12px;border:1px solid #cfd5df;border-radius:10px;background:#fff;color:var(--ink);min-height:46px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button,.button{border:0;border-radius:10px;padding:12px 16px;font-weight:750;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px}
+.primary{background:var(--red);color:#fff}.secondary{background:#fce9ed;color:#8f1029;border:1px solid #f3c5ce}.dark{background:#202938;color:#fff}.status{margin-top:12px;font-size:.93rem;color:var(--muted);min-height:24px}
+.bloodtypes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}.blood{border:1px solid #f0cbd2;background:#fff7f8;color:#98122d;border-radius:10px;text-align:center;padding:11px 4px;font-weight:850}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.stat b{display:block;font-size:1.3rem;color:var(--red)}.stat span{font-size:.85rem;color:var(--muted)}
+.results-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:22px 0 12px}.results-head h2{margin:0}.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.bank{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px}.bank h3{margin:0 0 5px;font-size:1.06rem}.tag{display:inline-block;border-radius:999px;padding:4px 8px;background:#e8f6ee;color:#14663e;font-size:.78rem;font-weight:750;margin:4px 4px 4px 0}.tag.demo{background:#fff1d9;color:#7a4d00}.bank p{margin:7px 0;color:#4f5c6e;font-size:.92rem}.bank .actions{margin-top:10px}.bank button{font-size:.9rem;padding:9px 12px}
+.section{margin-top:22px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.step{padding:16px;background:white;border:1px solid var(--line);border-radius:14px}.step b{display:block;margin-bottom:5px}.step p{color:var(--muted);font-size:.91rem;margin:0}
+footer{background:#202938;color:#e8edf5;padding:26px 18px;text-align:center;font-size:.9rem}footer a{color:#fff}
+.small{font-size:.85rem;color:var(--muted)}.hidden{display:none!important}.offline{font-weight:700;color:var(--green)}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.hero{padding-top:26px}.row{grid-template-columns:1fr}.panel{padding:16px}}
+
+.navlinks{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.navlinks a{color:#fff;text-decoration:none;border:1px solid #ffffff65;border-radius:999px;padding:7px 12px;font-size:.9rem}
+.inventory-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin:12px 0}.inventory-toolbar>div{flex:1;min-width:180px}
+.inventory{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stock-card{border:1px solid var(--line);border-radius:13px;padding:13px;background:#fff}.stock-card h3{margin:0 0 5px;font-size:1.2rem;color:var(--red)}.stock-number{font-size:1.5rem;font-weight:850}.stock-card p{margin:3px 0;color:var(--muted);font-size:.84rem}
+.stock-state{display:inline-block;border-radius:999px;padding:4px 8px;font-size:.76rem;font-weight:800;margin-top:6px}.stock-good{background:#e4f6eb;color:#12643a}.stock-low{background:#fff0d4;color:#7b4c00}.stock-none{background:#ffe4e7;color:#9a122a}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.info-card{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}.info-card h3{margin:0 0 6px;font-size:1.02rem}.info-card p,.info-card li{font-size:.91rem;color:#566174}.info-card ul{padding-left:20px;margin:8px 0}.location-map-link{display:inline-flex;margin-top:8px;padding:9px 12px;border-radius:9px;background:#eef6ff;color:#254b72;font-weight:750;text-decoration:none;border:1px solid #c9e0fb}.notice-blue{background:#eef6ff;border:1px solid #c9e0fb;color:#254b72;border-radius:12px;padding:12px 14px;margin:12px 0}.data-label{font-size:.82rem;color:var(--muted)}
+@media(max-width:760px){.inventory{grid-template-columns:repeat(2,1fr)}.info-grid{grid-template-columns:1fr}}
+
+
+.composition-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.composition-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px}
+.composition-card h3{margin:0 0 5px}.composition-card p{color:#596579;font-size:.92rem}
+.bar-row{display:grid;grid-template-columns:105px 1fr 55px;align-items:center;gap:9px;margin:12px 0;font-size:.9rem}
+.bar-track{height:12px;border-radius:999px;background:#edf0f5;overflow:hidden}
+.bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#a10f2b,#e45a70)}
+.percent{font-weight:800;text-align:right}
+@media(max-width:760px){.composition-grid{grid-template-columns:1fr}.bar-row{grid-template-columns:90px 1fr 48px;gap:6px}}
+
+
+.voice-panel{margin-top:16px;padding:15px;border:2px solid #f0c5ce;border-radius:14px;background:#fff7f8}
+.voice-panel h3{margin:0 0 5px;font-size:1.05rem;color:#8f1029}
+.voice-panel .actions{margin-top:10px}
+.voice-panel button{min-height:50px;font-size:1rem}
+</style>
+</head>
+<body>
+<header>
+ <div class="top">
+  <div class="brand">🩸 BloodConnect <span>India</span> <span id="versionBadge" style="display:inline-block;background:#fff;color:#a10f2b;border-radius:999px;padding:4px 9px;font-size:.72rem;letter-spacing:0">UPDATED v2.7 VOICE</span></div>
+  <label style="margin:0;color:white">Language
+   <select id="language" class="lang" aria-label="Choose language">
+    <option value="en">English</option><option value="as">অসমীয়া — Assamese</option><option value="bn">বাংলা — Bengali</option><option value="brx">बड़ो — Bodo</option><option value="doi">डोगरी — Dogri</option><option value="gu">ગુજરાતી — Gujarati</option><option value="hi">हिन्दी — Hindi</option><option value="kn">ಕನ್ನಡ — Kannada</option><option value="ks">कॉशुर — Kashmiri</option><option value="kok">कोंकणी — Konkani</option><option value="mai">मैथिली — Maithili</option><option value="ml">മലയാളം — Malayalam</option><option value="mni">মৈতৈলোন্ — Manipuri</option><option value="mr">मराठी — Marathi</option><option value="ne">नेपाली — Nepali</option><option value="or">ଓଡ଼ିଆ — Odia</option><option value="pa">ਪੰਜਾਬੀ — Punjabi</option><option value="sa">संस्कृतम् — Sanskrit</option><option value="sat">ᱥᱟᱱᱛᱟᱲᱤ — Santali</option><option value="sd">سنڌي — Sindhi</option><option value="ta">தமிழ் — Tamil</option><option value="te">తెలుగు — Telugu</option><option value="ur">اردو — Urdu</option>
+   </select>
+  </label>
+ </div>
+ <div class="hero">
+  <h1 id="heroTitle">Find blood faster. Help save a life.</h1>
+  <p id="heroText">Search blood groups, discover nearby blood banks, and connect with hospitals and willing donors—on a phone, tablet, or computer.</p>
+  <div class="pills"><span class="pill" id="pill1">✓ All 8 blood groups</span><span class="pill" id="pill2">✓ Mobile-friendly for every age</span><span class="pill" id="pill3">✓ Offline-ready app shell</span></div>
+  <nav class="navlinks" aria-label="Main navigation"><a href="#searchTitle">Find blood</a><a href="#donorRegisterTitle">Register as donor</a><a href="#inventoryTitle">Blood stock demo</a><a href="#bloodInfoTitle">Blood information</a><a href="#compositionTitle">Blood contents %</a><a href="#servicesTitle">Bank services</a><a href="#faqTitle">FAQs</a></nav>
+ </div>
+</header>
+<main>
+ <div class="alert" role="note"><strong>Emergency safety notice</strong>This is a demonstration prototype. The listed centres are sample records, not verified live inventory. For an urgent transfusion, contact the treating hospital/blood bank directly and confirm blood group, stock, eligibility, cost, and delivery. Do not delay medical care while using this site.</div>
+ <div class="grid">
+  <section class="panel">
+   <h2 id="searchTitle">Find blood near you</h2><p class="sub" id="searchSub">Enter a city, area, or 6-digit PIN code. Search nearby also gives you a Google Maps link for real place listings.</p>
+   <div class="row"><div><label for="bloodGroup" id="bloodLabel">Required blood group</label><select id="bloodGroup"><option value="Any">Any blood group</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div><div><label for="need" id="needLabel">What do you need?</label><select id="need"><option value="all">Blood bank or donor</option><option value="bank">Blood bank / hospital</option><option value="donor">Volunteer donor</option></select></div></div>
+   <label for="location" id="locationLabel">City, area or PIN code</label><input id="location" placeholder="e.g., Bengaluru or 560001" autocomplete="postal-code">
+   <div class="actions"><button class="primary" id="searchBtn">Search nearby</button><button class="secondary" id="locBtn">Use my location</button><a class="button secondary" id="mapsBtn" href="https://www.google.com/maps/search/blood+bank+near+me/" target="_blank" rel="noopener noreferrer">Open nearby blood banks in Maps</a></div>
+   
+    <section class="voice-panel" aria-label="Voice assistance">
+      <h3>🎙️ Voice help — speak instead of typing</h3>
+      <p class="small">Tap “Speak to search” and say the blood group and city, for example: “Find O positive blood banks in Bengaluru.” You can also listen to important instructions.</p>
+      <div class="actions">
+        <button type="button" class="primary" id="voiceSearchBtn">🎙️ Speak to search</button>
+        <button type="button" class="secondary" id="readPageBtn">🔊 Read instructions aloud</button>
+        <button type="button" class="secondary" id="stopVoiceBtn">⏹ Stop voice</button>
+      </div>
+      <p class="status" id="voiceStatus" role="status" aria-live="polite">Voice works in supported browsers. Allow microphone access when asked.</p>
+    </section>
+
+    <div class="status" id="locationStatus" aria-live="polite">Location access is optional. Enter a city or 6-digit PIN code and press Search nearby to get a Google Maps search.</div>
+   <div class="bloodtypes" aria-label="Blood group shortcuts"><button class="blood" data-blood="A+">A+</button><button class="blood" data-blood="A-">A−</button><button class="blood" data-blood="B+">B+</button><button class="blood" data-blood="B-">B−</button><button class="blood" data-blood="AB+">AB+</button><button class="blood" data-blood="AB-">AB−</button><button class="blood" data-blood="O+">O+</button><button class="blood" data-blood="O-">O−</button></div>
+  </section>
+  <section class="panel">
+   <h2 id="emergencyTitle">Emergency help</h2><p class="sub" id="emergencySub">If someone needs blood urgently, start with their treating hospital.</p>
+   <div class="actions"><a class="button primary" href="tel:112">Call India emergency number: 112</a><a class="button secondary" href="https://www.google.com/maps/search/blood+bank+near+me/" target="_blank" rel="noopener">Open Maps: blood banks</a></div>
+   <p class="small" style="margin-top:14px">112 is the pan-India emergency response number; it does not guarantee blood availability. Ask the hospital team to coordinate with licensed blood banks.</p>
+   <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+   <h2 id="offlineTitle">Online + offline access</h2><p id="offlineText" class="sub">After the first load, the app shell can open offline. Live stock, maps, calls, and location search need internet / phone service.</p>
+   <div id="networkStatus" class="offline">Checking connection…</div>
+  </section>
+ </div>
+ <div class="stats"><div class="stat"><b>8 groups</b><span>ABO and Rh blood types</span></div><div class="stat"><b>22 languages</b><span>India’s Scheduled Languages listed</span></div><div class="stat"><b>All ages</b><span>Large controls and simple steps</span></div></div>
+ <div class="results-head"><h2 id="resultsTitle">Sample nearby listings</h2><span class="small" id="resultCount">Showing demo records</span></div>
+ <div id="results" class="cards" aria-live="polite"></div>
+ 
+ <section class="section panel" id="donorRegisterSection">
+  <h2 id="donorRegisterTitle">Register as a blood donor</h2>
+  <p class="sub">Share basic contact and availability details so an authorised team can follow up. Donating is voluntary and subject to medical eligibility screening.</p>
+  <div class="notice-blue"><strong>Prototype privacy notice:</strong> This demo form does not send or save your details to a server, and it will not add you to a real donor list. Do not enter real personal information here. A live service needs secure storage, consent management, identity/eligibility checks and authorised blood-bank coordination.</div>
+  <form id="donorForm">
+   <div class="row">
+    <div><label for="donorName">Full name</label><input id="donorName" name="donorName" autocomplete="name" placeholder="Enter donor name" required maxlength="80"></div>
+    <div><label for="donorAge">Age</label><input id="donorAge" name="donorAge" type="number" min="18" max="65" placeholder="18–65" required></div>
+   </div>
+   <div class="row">
+    <div><label for="donorBloodGroup">Blood group</label><select id="donorBloodGroup" name="donorBloodGroup" required><option value="">Choose blood group</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
+    <div><label for="donorCity">City / PIN code</label><input id="donorCity" name="donorCity" placeholder="e.g., Bengaluru or 560001" required maxlength="80" autocomplete="address-level2"></div>
+   </div>
+   <div class="row">
+    <div><label for="donorPhone">Phone number (demo only)</label><input id="donorPhone" name="donorPhone" type="tel" inputmode="tel" placeholder="Use a sample number only" required maxlength="20" autocomplete="off"></div>
+    <div><label for="donorAvailability">Availability</label><select id="donorAvailability" name="donorAvailability" required><option value="">Choose availability</option><option>Available for contact</option><option>Available on weekends</option><option>Not available currently</option></select></div>
+   </div>
+   <label style="display:flex;gap:10px;align-items:flex-start;font-weight:500;margin-top:16px"><input id="donorConsent" type="checkbox" required style="width:20px;min-height:20px;margin-top:3px"> I understand this is a demo registration only, my details will not be sent or stored, and actual donation requires screening by a qualified blood bank.</label>
+   <div class="actions"><button class="primary" type="submit">Preview registration</button><button class="secondary" type="reset">Clear form</button></div>
+   <p class="status" id="donorFormStatus" role="status" aria-live="polite"></p>
+ </form>
+ </section>
+
+ <section class="section panel" id="compositionSection">
+  <h2 id="compositionTitle">What does blood contain? (approximate percentages)</h2>
+  <p class="sub">Blood is made of a liquid part called plasma and formed elements (blood cells and platelets). These figures are typical approximate values for whole blood and can vary by person and clinical condition.</p>
+  <div class="composition-grid">
+   <article class="composition-card">
+    <h3>🩸 Main parts of whole blood</h3>
+    <div class="bar-row"><span>Plasma</span><div class="bar-track"><div class="bar-fill" style="width:55%"></div></div><span class="percent">~55%</span></div>
+    <div class="bar-row"><span>Formed elements</span><div class="bar-track"><div class="bar-fill" style="width:45%"></div></div><span class="percent">~45%</span></div>
+    <p>Formed elements include red blood cells, white blood cells and platelets. The proportion is commonly described using the hematocrit, which mainly reflects red blood cells.</p>
+   </article>
+   <article class="composition-card">
+    <h3>💧 What plasma contains</h3>
+    <div class="bar-row"><span>Water</span><div class="bar-track"><div class="bar-fill" style="width:92%"></div></div><span class="percent">~92%</span></div>
+    <div class="bar-row"><span>Proteins</span><div class="bar-track"><div class="bar-fill" style="width:7%"></div></div><span class="percent">~7%</span></div>
+    <div class="bar-row"><span>Other solutes</span><div class="bar-track"><div class="bar-fill" style="width:1%"></div></div><span class="percent">~1%</span></div>
+    <p>Other solutes include electrolytes, nutrients, hormones, dissolved gases and waste products. These percentages are rounded.</p>
+   </article>
+   <article class="composition-card">
+    <h3>🔴 Formed elements (approximate volume)</h3>
+    <div class="bar-row"><span>Red cells</span><div class="bar-track"><div class="bar-fill" style="width:44%"></div></div><span class="percent">~44%</span></div>
+    <div class="bar-row"><span>White cells + platelets</span><div class="bar-track"><div class="bar-fill" style="width:1%"></div></div><span class="percent">&lt;1%</span></div>
+    <p>Red cells make up nearly all of the formed-element volume. White blood cells and platelets together form a very small fraction, often called the buffy coat.</p>
+   </article>
+   <article class="composition-card">
+    <h3>🧬 Main jobs of blood</h3>
+    <p><strong>Red blood cells:</strong> carry oxygen using haemoglobin.</p>
+    <p><strong>White blood cells:</strong> help defend against infection.</p>
+    <p><strong>Platelets:</strong> help form clots to control bleeding.</p>
+    <p><strong>Plasma:</strong> transports proteins, nutrients, hormones and waste.</p>
+   </article>
+  </div>
+  <div class="notice-blue"><strong>Important:</strong> These percentages describe the approximate composition of normal whole blood, not the percentage of each blood group available in a blood bank. Blood-bank stock is counted by tested units and components, not by composition percentages. Clinical decisions must be made by qualified healthcare staff.</div>
+ </section>
+
+ <section class="section panel" id="inventorySection">
+  <h2 id="inventoryTitle">Blood bank stock dashboard</h2>
+  <p class="sub">Check the inventory view by blood group and component. In this prototype, counts are simulated examples, not live blood-bank data.</p>
+  <div class="notice-blue"><strong>Live stock connection is not enabled yet.</strong> A real live-stock feature must receive verified updates from participating blood banks through an authorised API or staff dashboard. Never rely on demo counts for an emergency.</div>
+  <div class="inventory-toolbar">
+   <div><label for="stockBank">Select sample blood bank</label><select id="stockBank"><option value="city">Demo City Blood Centre</option><option value="govt">Demo Government Hospital Blood Bank</option><option value="regional">Demo Regional Blood Centre</option></select></div>
+   <div><label for="componentFilter">Blood component</label><select id="componentFilter"><option value="all">All components</option><option value="Whole blood">Whole blood</option><option value="Packed red blood cells">Packed red blood cells (PRBC)</option><option value="Platelets">Platelets</option><option value="Plasma">Plasma</option><option value="Cryoprecipitate">Cryoprecipitate</option></select></div>
+   <div><button class="secondary" id="refreshStock">Refresh demo stock</button></div>
+  </div>
+  <p class="data-label" id="stockUpdated">Demo inventory — example data only.</p><div class="inventory" id="inventoryCards" aria-live="polite"></div>
+  <p class="small">Stock status shown here is illustrative. Real availability can change quickly and must be confirmed by calling the blood bank / hospital.</p>
+ </section>
+ <section class="section" id="bloodInfoSection"><h2 id="bloodInfoTitle">Blood information and components</h2><p class="sub">A simple guide to what a blood bank may collect, test, store and issue under clinical supervision.</p>
+  <div class="info-grid">
+   <article class="info-card"><h3>🩸 Whole blood</h3><p>Contains red cells, plasma, platelets and other components. Use depends on clinical need and local protocols.</p></article>
+   <article class="info-card"><h3>🔴 Packed red blood cells (PRBC)</h3><p>Primarily used to improve the blood’s oxygen-carrying capacity when a clinician determines a transfusion is needed.</p></article>
+   <article class="info-card"><h3>🟡 Platelets</h3><p>Help blood clot. Platelet products have special storage requirements and often a shorter shelf life than red-cell products.</p></article>
+   <article class="info-card"><h3>💛 Plasma</h3><p>The liquid part of blood containing clotting proteins. Plasma use and compatibility depend on the clinical situation.</p></article>
+   <article class="info-card"><h3>🧬 Cryoprecipitate</h3><p>A plasma-derived component rich in selected clotting proteins, issued for specific medical indications.</p></article>
+   <article class="info-card"><h3>🧪 Testing and matching</h3><p>Blood banks follow donor screening, infectious-disease testing, blood grouping and compatibility procedures before issue.</p></article>
+  </div><div class="notice-blue">Blood group alone is not enough to decide whether a unit is suitable. The treating clinical team and blood bank must confirm compatibility and patient-specific requirements.</div>
+ </section>
+ <section class="section" id="servicesSection"><h2 id="servicesTitle">Blood bank information and services</h2><div class="info-grid">
+  <article class="info-card"><h3>🏥 Services to list</h3><ul><li>Blood and component availability</li><li>Cross-matching / compatibility testing</li><li>Blood donation appointment details</li><li>Hospital issue and collection instructions</li><li>Contact desk and operating hours</li></ul></article>
+  <article class="info-card"><h3>📋 What a listing should show</h3><ul><li>Verified centre name and full address</li><li>Phone number and hours</li><li>Stock update timestamp</li><li>Available components and units</li><li>Eligibility / appointment guidance</li></ul></article>
+  <article class="info-card"><h3>🧑‍🤝‍🧑 Donor safety</h3><ul><li>Donation is voluntary</li><li>Staff assess donor eligibility</li><li>Consent and privacy are required</li><li>Never publish donor details without permission</li><li>Never promise a donor is medically eligible</li></ul></article>
+ </div></section>
+ <section class="section panel" id="faqSection"><h2 id="faqTitle">Frequently asked questions</h2>
+  <details><summary><strong>Can I use this website to confirm live blood stock?</strong></summary><p>Not yet. This version displays clearly labelled example inventory. Live counts require a verified data connection to participating blood banks.</p></details>
+  <details><summary><strong>Does the same blood group always mean a match?</strong></summary><p>No. The hospital and blood bank must perform the appropriate testing and compatibility checks for the patient.</p></details>
+  <details><summary><strong>Can I request a donor directly?</strong></summary><p>The prototype has no real registered donors. A production service needs opt-in donor registration, consent, privacy safeguards and eligibility screening.</p></details>
+  <details><summary><strong>What should I do in an emergency?</strong></summary><p>Contact the treating hospital immediately and ask its team to coordinate with a licensed blood bank. Do not delay treatment while searching online.</p></details>
+  <details><summary><strong>Can I use the website offline?</strong></summary><p>The app shell may open offline after it has been loaded and cached. Live stock, map search, calls and location-based search need connectivity.</p></details>
+ </section>
+
+ <section class="section">
+  <h2 id="howTitle">How it works</h2>
+  <div class="steps"><div class="step"><b>1. Search</b><p>Choose the blood group and enter an area, PIN code, or allow location access.</p></div><div class="step"><b>2. Contact and confirm</b><p>Call the centre or hospital to verify stock, compatibility, eligibility, and collection / delivery instructions.</p></div><div class="step"><b>3. Coordinate safely</b><p>Hospitals and licensed blood banks should manage testing, matching, and transfusion decisions.</p></div></div>
+ </section>
+ <section class="section panel">
+  <h2>Important for a real deployment</h2>
+  <p class="sub">To turn this prototype into a trustworthy public service, connect it to verified licensed blood-bank data and hospital workflows. Do not publish personal donor phone numbers or promise stock without live confirmation.</p>
+  <ul><li>Partner with licensed blood banks / hospitals for real-time stock updates.</li><li>Use verified maps and distance calculations, with a manual city/PIN fallback.</li><li>Add donor consent, eligibility screening, privacy protections, and abuse reporting.</li><li>Use professional translations and accessible text/audio support for all listed languages.</li><li>Keep emergency instructions clear; never replace clinicians or blood-bank screening.</li></ul>
+ </section>
+</main>
+<footer><strong>BloodConnect India — concept prototype</strong><br>Designed for accessible blood discovery. Demo listings are not live, verified or an offer of blood.<br><span id="footerLine">Please confirm all information directly with the hospital or blood bank.</span></footer>
+<script>
+const records=[
+ {name:"Demo City Blood Centre",city:"Bengaluru",area:"Central Bengaluru",type:"Blood bank",groups:["A+","B+","O+","AB+"],phone:"",note:"Sample listing only — replace with verified partner data."},
+ {name:"Demo Government Hospital Blood Bank",city:"Bengaluru",area:"North Bengaluru",type:"Hospital",groups:["A-","B-","O-","AB-"],phone:"",note:"Sample listing only — stock is not real-time."},
+ {name:"Demo Community Donor Network",city:"Mysuru",area:"Mysuru",type:"Volunteer donor network",groups:["A+","A-","B+","B-","AB+","AB-","O+","O-"],phone:"",note:"Illustrative only — no real donor is registered."},
+ {name:"Demo Regional Blood Centre",city:"Hubballi",area:"Hubballi-Dharwad",type:"Blood bank",groups:["O+","O-","A+","AB+"],phone:"",note:"Sample listing only — contact details are not provided."},
+ {name:"Demo District Hospital Blood Bank",city:"Pune",area:"Pune",type:"Hospital",groups:["B+","B-","AB+","AB-"],phone:"",note:"Sample listing only — not a verified facility."},
+ {name:"Demo Blood Donation Group",city:"Hyderabad",area:"Hyderabad",type:"Volunteer donor network",groups:["O+","A+","B+","AB+"],phone:"",note:"Illustrative only — no live donor availability."}
+];
+const translations={
+en:{heroTitle:"Find blood faster. Help save a life.",heroText:"Search blood groups, discover nearby blood banks, and connect with hospitals and willing donors—on a phone, tablet, or computer.",searchTitle:"Find blood near you",searchSub:"Enter a city, area, or 6-digit PIN code. Search nearby also gives you a Google Maps link for real place listings.",bloodLabel:"Required blood group",needLabel:"What do you need?",locationLabel:"City, area or PIN code",searchBtn:"Search nearby",locBtn:"Use my location",emergencyTitle:"Emergency help",emergencySub:"If someone needs blood urgently, start with their treating hospital.",offlineTitle:"Online + offline access",offlineText:"After the first load, the app shell can open offline. Live stock, maps, calls, and location search need internet / phone service.",resultsTitle:"Sample nearby listings",howTitle:"How it works",any:"Any blood group",all:"Blood bank or donor",bank:"Blood bank / hospital",donor:"Volunteer donor",empty:"No demo records match. Try another group or city.",demo:"DEMO ONLY — not verified",details:"Available groups (example only)",contact:"No verified contact available",locationHint:"Location access is optional. Enter a city or 6-digit PIN code and press Search nearby to get a Google Maps search."},
+hi:{heroTitle:"जल्दी रक्त खोजें। जीवन बचाने में मदद करें।",heroText:"अपने फ़ोन, टैबलेट या कंप्यूटर से रक्त समूह खोजें और नज़दीकी ब्लड बैंक, अस्पतालों व इच्छुक दाताओं से जुड़ें।",searchTitle:"अपने पास रक्त खोजें",searchSub:"रक्त समूह चुनें और लोकेशन का उपयोग करें या शहर / पिन कोड लिखें।",bloodLabel:"आवश्यक रक्त समूह",needLabel:"आपको क्या चाहिए?",locationLabel:"शहर, क्षेत्र या पिन कोड",searchBtn:"नज़दीक खोजें",locBtn:"मेरी लोकेशन इस्तेमाल करें",emergencyTitle:"आपातकालीन सहायता",emergencySub:"तुरंत रक्त चाहिए तो सबसे पहले इलाज कर रहे अस्पताल से संपर्क करें।",offlineTitle:"ऑनलाइन + ऑफलाइन",offlineText:"पहली बार खुलने के बाद ऐप का मूल भाग ऑफलाइन खुल सकता है। लाइव स्टॉक, मैप और लोकेशन के लिए इंटरनेट चाहिए।",resultsTitle:"उदाहरण के लिए नज़दीकी लिस्टिंग",howTitle:"यह कैसे काम करता है",any:"कोई भी रक्त समूह",all:"ब्लड बैंक या दाता",bank:"ब्लड बैंक / अस्पताल",donor:"स्वयंसेवी दाता",empty:"मेल खाने वाली डेमो लिस्टिंग नहीं मिली। दूसरा समूह या शहर चुनें।",demo:"केवल डेमो — सत्यापित नहीं",details:"उदाहरण वाले रक्त समूह",contact:"सत्यापित संपर्क उपलब्ध नहीं",locationHint:"लोकेशन देना वैकल्पिक है। आप शहर या पिन कोड लिख सकते हैं।"},
+kn:{heroTitle:"ರಕ್ತವನ್ನು ಬೇಗ ಹುಡುಕಿ. ಜೀವ ಉಳಿಸಲು ಸಹಾಯ ಮಾಡಿ.",heroText:"ಮೊಬೈಲ್, ಟ್ಯಾಬ್ಲೆಟ್ ಅಥವಾ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ರಕ್ತದ ಗುಂಪುಗಳನ್ನು ಹುಡುಕಿ, ಹತ್ತಿರದ ರಕ್ತನಿಧಿ, ಆಸ್ಪತ್ರೆ ಮತ್ತು ಸ್ವಯಂಸೇವಕರನ್ನು ಸಂಪರ್ಕಿಸಿ.",searchTitle:"ನಿಮ್ಮ ಹತ್ತಿರ ರಕ್ತ ಹುಡುಕಿ",searchSub:"ರಕ್ತದ ಗುಂಪು ಆಯ್ಕೆಮಾಡಿ; ಸ್ಥಳ ಬಳಸಿ ಅಥವಾ ನಗರ / ಪಿನ್ ಕೋಡ್ ನಮೂದಿಸಿ.",bloodLabel:"ಬೇಕಾದ ರಕ್ತದ ಗುಂಪು",needLabel:"ನಿಮಗೆ ಏನು ಬೇಕು?",locationLabel:"ನಗರ, ಪ್ರದೇಶ ಅಥವಾ ಪಿನ್ ಕೋಡ್",searchBtn:"ಹತ್ತಿರ ಹುಡುಕಿ",locBtn:"ನನ್ನ ಸ್ಥಳ ಬಳಸಿ",emergencyTitle:"ತುರ್ತು ಸಹಾಯ",emergencySub:"ತಕ್ಷಣ ರಕ್ತ ಬೇಕಾದರೆ ಮೊದಲು ಚಿಕಿತ್ಸೆ ನೀಡುತ್ತಿರುವ ಆಸ್ಪತ್ರೆಯನ್ನು ಸಂಪರ್ಕಿಸಿ.",offlineTitle:"ಆನ್‌ಲೈನ್ + ಆಫ್‌ಲೈನ್",offlineText:"ಮೊದಲ ಬಾರಿ ತೆರೆದ ನಂತರ ಮೂಲ ಆಪ್ ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿ ತೆರೆಯಬಹುದು. ನೇರ ಸ್ಟಾಕ್, ನಕ್ಷೆ ಮತ್ತು ಸ್ಥಳ ಹುಡುಕಲು ಇಂಟರ್ನೆಟ್ ಬೇಕು.",resultsTitle:"ಮಾದರಿ ಹತ್ತಿರದ ಪಟ್ಟಿಗಳು",howTitle:"ಇದು ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ",any:"ಯಾವುದೇ ರಕ್ತದ ಗುಂಪು",all:"ರಕ್ತನಿಧಿ ಅಥವಾ ದಾನಿ",bank:"ರಕ್ತನಿಧಿ / ಆಸ್ಪತ್ರೆ",donor:"ಸ್ವಯಂಸೇವಕ ದಾನಿ",empty:"ಹೊಂದುವ ಮಾದರಿ ಪಟ್ಟಿ ಸಿಗಲಿಲ್ಲ. ಬೇರೆ ಗುಂಪು ಅಥವಾ ನಗರ ಪ್ರಯತ್ನಿಸಿ.",demo:"ಮಾದರಿ ಮಾತ್ರ — ಪರಿಶೀಲಿತವಲ್ಲ",details:"ಉದಾಹರಣೆಯ ರಕ್ತದ ಗುಂಪುಗಳು",contact:"ಪರಿಶೀಲಿತ ಸಂಪರ್ಕ ಲಭ್ಯವಿಲ್ಲ",locationHint:"ಸ್ಥಳ ಅನುಮತಿ ಐಚ್ಛಿಕ. ನಗರ ಅಥವಾ ಪಿನ್ ಕೋಡ್ ನಮೂದಿಸಬಹುದು."},
+ta:{heroTitle:"இரத்தத்தை விரைவாகக் கண்டறிந்து உயிரைக் காப்பாற்ற உதவுங்கள்.",heroText:"மொபைல், டேப்லெட் அல்லது கணினியில் இரத்த வகைகளைத் தேடி அருகிலுள்ள இரத்த வங்கிகள், மருத்துவமனைகள் மற்றும் தன்னார்வலர்களை அணுகுங்கள்.",searchTitle:"அருகில் இரத்தத்தைத் தேடுங்கள்",searchSub:"இரத்த வகையைத் தேர்ந்தெடுத்து இருப்பிடத்தைப் பயன்படுத்தவும் அல்லது நகரம் / PIN குறியீட்டை உள்ளிடவும்.",bloodLabel:"தேவையான இரத்த வகை",needLabel:"உங்களுக்கு என்ன தேவை?",locationLabel:"நகரம், பகுதி அல்லது PIN குறியீடு",searchBtn:"அருகில் தேடு",locBtn:"என் இருப்பிடத்தைப் பயன்படுத்து",emergencyTitle:"அவசர உதவி",emergencySub:"உடனடியாக இரத்தம் தேவைப்பட்டால் முதலில் சிகிச்சை அளிக்கும் மருத்துவமனையைத் தொடர்புகொள்ளுங்கள்.",offlineTitle:"ஆன்லைன் + ஆஃப்லைன்",offlineText:"முதல் முறை திறந்த பிறகு அடிப்படை செயலி ஆஃப்லைனில் திறக்கலாம். நேரடி இருப்பு, வரைபடம், இருப்பிடத் தேடலுக்கு இணையம் தேவை.",resultsTitle:"மாதிரி அருகிலுள்ள பட்டியல்கள்",howTitle:"இது எப்படிச் செயல்படுகிறது",any:"எந்த இரத்த வகையும்",all:"இரத்த வங்கி அல்லது தானதாரர்",bank:"இரத்த வங்கி / மருத்துவமனை",donor:"தன்னார்வத் தானதாரர்",empty:"பொருந்தும் மாதிரி பட்டியல் இல்லை. வேறு வகை அல்லது நகரத்தை முயற்சிக்கவும்.",demo:"மாதிரி மட்டும் — சரிபார்க்கப்படவில்லை",details:"எடுத்துக்காட்டு இரத்த வகைகள்",contact:"சரிபார்க்கப்பட்ட தொடர்பு இல்லை",locationHint:"இருப்பிட அனுமதி விருப்பமானது. நகரம் அல்லது PIN குறியீட்டை உள்ளிடலாம்."},
+te:{heroTitle:"రక్తాన్ని త్వరగా కనుగొని ప్రాణాన్ని కాపాడటానికి సహాయపడండి.",heroText:"ఫోన్, టాబ్లెట్ లేదా కంప్యూటర్‌లో రక్త గ్రూపులను వెతికి సమీపంలోని బ్లడ్ బ్యాంకులు, ఆసుపత్రులు, స్వచ్ఛంద దాతలను సంప్రదించండి.",searchTitle:"మీ దగ్గర రక్తాన్ని కనుగొనండి",searchSub:"రక్త గ్రూప్ ఎంచుకుని లొకేషన్ వాడండి లేదా నగరం / PIN కోడ్ నమోదు చేయండి.",bloodLabel:"కావలసిన రక్త గ్రూప్",needLabel:"మీకు ఏమి కావాలి?",locationLabel:"నగరం, ప్రాంతం లేదా PIN కోడ్",searchBtn:"సమీపంలో వెతకండి",locBtn:"నా లొకేషన్ వాడండి",emergencyTitle:"అత్యవసర సహాయం",emergencySub:"వెంటనే రక్తం అవసరమైతే ముందుగా చికిత్స చేస్తున్న ఆసుపత్రిని సంప్రదించండి.",offlineTitle:"ఆన్‌లైన్ + ఆఫ్‌లైన్",offlineText:"మొదటిసారి తెరిచిన తర్వాత ప్రాథమిక యాప్ ఆఫ్‌లైన్‌లో తెరవవచ్చు. ప్రత్యక్ష స్టాక్, మ్యాప్, లొకేషన్ కోసం ఇంటర్నెట్ అవసరం.",resultsTitle:"నమూనా సమీప జాబితాలు",howTitle:"ఇది ఎలా పనిచేస్తుంది",any:"ఏదైనా రక్త గ్రూప్",all:"బ్లడ్ బ్యాంక్ లేదా దాత",bank:"బ్లడ్ బ్యాంక్ / ఆసుపత్రి",donor:"స్వచ్ఛంద దాత",empty:"సరిపోయే నమూనా జాబితా లేదు. వేరే గ్రూప్ లేదా నగరాన్ని ప్రయత్నించండి.",demo:"నమూనా మాత్రమే — ధృవీకరించబడలేదు",details:"ఉదాహరణ రక్త గ్రూపులు",contact:"ధృవీకరించిన సంప్రదింపు లేదు",locationHint:"లొకేషన్ అనుమతి ఐచ్ఛికం. నగరం లేదా PIN కోడ్ నమోదు చేయవచ్చు."}
+};
+let userCoords=null;
+function tr(key){const lang=document.getElementById('language').value;return (translations[lang]&&translations[lang][key])||translations.en[key]||key}
+function applyLanguage(){const keys=['heroTitle','heroText','searchTitle','searchSub','bloodLabel','needLabel','locationLabel','searchBtn','locBtn','emergencyTitle','emergencySub','offlineTitle','offlineText','resultsTitle','howTitle'];keys.forEach(k=>{const el=document.getElementById(k);if(el)el.textContent=tr(k)});document.querySelector('#bloodGroup option[value="Any"]').textContent=tr('any');document.querySelector('#need option[value="all"]').textContent=tr('all');document.querySelector('#need option[value="bank"]').textContent=tr('bank');document.querySelector('#need option[value="donor"]').textContent=tr('donor');document.getElementById('locationStatus').textContent=tr('locationHint');render()}
+function render(){
+ const group=document.getElementById('bloodGroup').value;
+ const need=document.getElementById('need').value;
+ const rawLoc=document.getElementById('location').value.trim();
+ const loc=rawLoc.toLowerCase().replace(/\s+/g,' ');
+ const list=records.filter(r=>
+  (group==='Any'||r.groups.includes(group)) &&
+  (need==='all'||(need==='bank'&&r.type!=='Volunteer donor network')||(need==='donor'&&r.type==='Volunteer donor network')) &&
+  (!loc ||
+   (r.city+' '+r.area).toLowerCase().includes(loc) ||
+   (loc.includes('bengaluru')||loc.includes('bangalore'))&&r.city==='Bengaluru' ||
+   (loc.includes('mysuru')||loc.includes('mysore'))&&r.city==='Mysuru' ||
+   (loc.includes('mangaluru')||loc.includes('mangalore'))&&r.city==='Mangaluru' ||
+   (loc.includes('hubballi')||loc.includes('hubli'))&&r.city==='Hubballi')
+ );
+ const results=document.getElementById('results');
+ results.innerHTML='';
+
+ // Always provide a real map-search link for the user's city, locality or PIN code.
+ const mapQuery=(need==='donor'?'blood donors':'blood banks hospitals');
+ const fullQuery=rawLoc ? mapQuery+' near '+rawLoc+', India' : mapQuery+' near me';
+ const mapCard=document.createElement('div');
+ mapCard.className='bank';
+ const mapTitle=document.createElement('h3');
+ mapTitle.textContent=rawLoc ? 'Search real places near '+rawLoc : 'Search real places near your location';
+ const mapDescription=document.createElement('p');
+ mapDescription.textContent='Open Google Maps for current place listings. Call the blood bank or hospital to confirm availability; this website does not receive live stock data.';
+ const mapLink=document.createElement('a');
+ mapLink.className='button primary';
+ mapLink.href='https://www.google.com/maps/search/'+encodeURIComponent(fullQuery);
+ mapLink.target='_blank';
+ mapLink.rel='noopener noreferrer';
+ mapLink.textContent='Open Google Maps results';
+ mapCard.appendChild(mapTitle); mapCard.appendChild(mapDescription); mapCard.appendChild(mapLink);
+ results.appendChild(mapCard);
+
+ if(!list.length){
+  const empty=document.createElement('div');
+  empty.className='bank';
+  const p=document.createElement('p');
+  p.textContent=rawLoc
+   ? 'No matching sample records for "'+rawLoc+'". Use the Google Maps link above for real place listings, or try a city name / 6-digit PIN code.'
+   : tr('empty');
+  empty.appendChild(p); results.appendChild(empty);
+  document.getElementById('resultCount').textContent='No matching demo records • Google Maps search available above';
+  return;
+ }
+ list.forEach(r=>{
+  const el=document.createElement('article');el.className='bank';
+  el.innerHTML='<h3></h3><span class="tag demo">'+tr('demo')+'</span><span class="tag"></span><p></p><p></p><p class="small"></p><div class="actions"><a class="button secondary mapBtn" target="_blank" rel="noopener noreferrer">Open in Maps</a></div>';
+  el.querySelector('h3').textContent=r.name;
+  el.querySelectorAll('.tag')[1].textContent=r.type;
+  el.querySelectorAll('p')[0].textContent='📍 '+r.area+', '+r.city;
+  el.querySelectorAll('p')[1].textContent=tr('details')+': '+r.groups.join(', ');
+  el.querySelectorAll('p')[2].textContent=r.note;
+  el.querySelector('.mapBtn').href='https://www.google.com/maps/search/'+encodeURIComponent('blood bank '+r.area+' '+r.city);
+  results.appendChild(el);
+ });
+ document.getElementById('resultCount').textContent=list.length+' sample records — not live stock • Google Maps link above searches real places';
+}
+document.getElementById('language').addEventListener('change',applyLanguage);
+function updateMapsLink(){
+ const rawLoc=document.getElementById('location').value.trim();
+ const need=document.getElementById('need').value;
+ const query=(need==='donor'?'blood donors': 'blood banks hospitals')+(rawLoc?' near '+rawLoc+', India':' near me');
+ document.getElementById('mapsBtn').href='https://www.google.com/maps/search/'+encodeURIComponent(query);
+}
+document.getElementById('searchBtn').addEventListener('click',()=>{
+ render();
+ updateMapsLink();
+ const s=document.getElementById('locationStatus');
+ const rawLoc=document.getElementById('location').value.trim();
+ s.textContent=rawLoc
+  ? 'Searching Maps near "'+rawLoc+'". Click “Open nearby blood banks in Maps” to view real places. The cards below are demo records only.'
+  : 'Click “Open nearby blood banks in Maps” to see blood banks near you. For your exact location, allow location access.';
+});
+document.getElementById('location').addEventListener('input',updateMapsLink);
+document.getElementById('need').addEventListener('change',updateMapsLink);
+document.getElementById('location').addEventListener('keydown',e=>{if(e.key==='Enter')render()});
+document.querySelectorAll('[data-blood]').forEach(b=>b.addEventListener('click',()=>{document.getElementById('bloodGroup').value=b.dataset.blood;render()}));
+document.getElementById('locBtn').addEventListener('click',()=>{
+ const s=document.getElementById('locationStatus');
+ s.textContent='';
+ if(!navigator.geolocation){
+  s.textContent='Your browser does not support location. Enter a city or PIN code, or open Maps.';
+  return;
+ }
+ if(location.protocol!=='https:' && location.hostname!=='localhost' && location.hostname!=='127.0.0.1'){
+  s.textContent='Location access usually requires HTTPS or localhost. Run this website on a local server or publish it using HTTPS, then allow location permission. You can still enter a city/PIN or use Maps.';
+  const fallback=document.createElement('a');
+  fallback.className='location-map-link';
+  fallback.href='https://www.google.com/maps/search/blood+bank+near+me/';
+  fallback.target='_blank'; fallback.rel='noopener noreferrer';
+  fallback.textContent='Open Maps: blood banks near me';
+  s.appendChild(document.createElement('br')); s.appendChild(fallback);
+  return;
+ }
+ s.textContent='Requesting location permission… Please choose Allow if your browser asks.';
+ navigator.geolocation.getCurrentPosition(pos=>{
+  userCoords={lat:pos.coords.latitude,lon:pos.coords.longitude};
+  document.getElementById('location').value=userCoords.lat.toFixed(5)+', '+userCoords.lon.toFixed(5);
+  document.getElementById('mapsBtn').href='https://www.google.com/maps/search/blood+bank/@'+userCoords.lat+','+userCoords.lon+',14z';
+  render();
+  s.textContent='Location found. Click “Open nearby blood banks in Maps” to view nearby places. This website does not have a verified live blood-bank directory.';
+  const mapLink=document.createElement('a');
+  mapLink.className='location-map-link';
+  mapLink.href=document.getElementById('mapsBtn').href;
+  mapLink.target='_blank'; mapLink.rel='noopener noreferrer';
+  mapLink.textContent='Open Maps at my location';
+  s.appendChild(document.createElement('br')); s.appendChild(mapLink);
+ },err=>{
+  let message='Location could not be accessed. ';
+  if(err.code===1) message+='Permission was denied. Allow location access in your browser settings, or enter a city/PIN code.';
+  else if(err.code===2) message+='Your device could not determine its location. Check device location settings, or enter a city/PIN code.';
+  else if(err.code===3) message+='The request timed out. Try again, or enter a city/PIN code.';
+  else message+='Enter a city/PIN code, or open Maps.';
+  s.textContent=message;
+  const fallback=document.createElement('a');
+  fallback.className='location-map-link';
+  fallback.href='https://www.google.com/maps/search/blood+bank+near+me/';
+  fallback.target='_blank'; fallback.rel='noopener noreferrer';
+  fallback.textContent='Open Maps: blood banks near me';
+  s.appendChild(document.createElement('br')); s.appendChild(fallback);
+ },{enableHighAccuracy:false,timeout:15000,maximumAge:300000});
+});
+
+const stockExamples = {
+ city: {"Whole blood":[8,2,6,1,3,0,10,2],"Packed red blood cells":[12,2,7,1,5,0,14,3],"Platelets":[4,1,3,0,2,0,5,1],"Plasma":[6,2,4,1,3,1,7,2],"Cryoprecipitate":[2,0,1,0,1,0,2,0]},
+ govt: {"Whole blood":[3,0,5,1,2,0,7,1],"Packed red blood cells":[5,1,8,0,3,0,9,2],"Platelets":[2,0,4,1,1,0,3,0],"Plasma":[4,1,6,2,2,0,5,1],"Cryoprecipitate":[1,0,2,0,0,0,1,0]},
+ regional: {"Whole blood":[5,1,4,0,2,1,8,2],"Packed red blood cells":[7,1,6,1,4,0,11,2],"Platelets":[3,0,2,0,2,1,4,0],"Plasma":[5,2,3,1,3,0,6,1],"Cryoprecipitate":[1,0,1,0,1,0,2,0]}
+};
+const stockGroups=["A+","A-","B+","B-","AB+","AB-","O+","O-"];
+function renderStock(){
+ const bank=document.getElementById('stockBank').value, component=document.getElementById('componentFilter').value;
+ const inv=document.getElementById('inventoryCards'); inv.innerHTML='';
+ Object.entries(stockExamples[bank]).filter(([name])=>component==='all'||name===component).forEach(([name,baseCounts])=>{
+  const counts=baseCounts.map((count,i)=>Math.max(0,count+((stockRefreshCount+i+(name.length%3))%3)-1));
+  counts.forEach((count,i)=>{const card=document.createElement('article');card.className='stock-card';
+   const state=count===0?'No demo units':count<=2?'Low demo stock':'Demo stock shown';
+   const cls=count===0?'stock-none':count<=2?'stock-low':'stock-good';
+   card.innerHTML='<h3></h3><div class="data-label"></div><div class="stock-number"></div><p></p><span class="stock-state"></span>';
+   card.querySelector('h3').textContent=stockGroups[i];card.querySelector('.data-label').textContent=name;
+   card.querySelector('.stock-number').textContent=count+' units';card.querySelector('p').textContent='Example count only';
+   const badge=card.querySelector('.stock-state');badge.className='stock-state '+cls;badge.textContent=state;inv.appendChild(card);
+  });
+ });
+ document.getElementById('stockUpdated').textContent=(stockRefreshCount?'Demo inventory refreshed for preview #'+stockRefreshCount:'Demo inventory generated for preview')+' • '+new Date().toLocaleString()+' • NOT live or verified';
+}
+let stockRefreshCount=0;
+document.getElementById('stockBank').addEventListener('change',renderStock);
+document.getElementById('componentFilter').addEventListener('change',renderStock);
+document.getElementById('refreshStock').addEventListener('click',()=>{
+ stockRefreshCount++;
+ renderStock();
+ const status=document.getElementById('stockUpdated');
+ status.textContent='Demo inventory refreshed for preview #'+stockRefreshCount+' • '+new Date().toLocaleString()+' • NOT live or verified';
+});
+
+
+document.getElementById('donorForm').addEventListener('submit',function(event){
+ event.preventDefault();
+ const age=Number(document.getElementById('donorAge').value);
+ const status=document.getElementById('donorFormStatus');
+ if(age<18||age>65){
+  status.textContent='For this prototype, registration is limited to adults aged 18–65. A blood bank must confirm actual donor eligibility.';
+  return;
+ }
+ if(!document.getElementById('donorConsent').checked){
+  status.textContent='Please confirm the demo privacy and eligibility notice.';
+  return;
+ }
+ status.textContent='Demo preview complete for '+document.getElementById('donorName').value.trim()+'. Blood group: '+document.getElementById('donorBloodGroup').value+'. City: '+document.getElementById('donorCity').value.trim()+'. No details were sent or saved. This is not a real donor registration.';
+});
+document.getElementById('donorForm').addEventListener('reset',function(){
+ document.getElementById('donorFormStatus').textContent='';
+});
+
+
+// Voice accessibility: speech-to-text search and text-to-speech instructions.
+const voiceStatus = document.getElementById('voiceStatus');
+const voiceLocales = {en:'en-IN',hi:'hi-IN',kn:'kn-IN',ta:'ta-IN',te:'te-IN',ml:'ml-IN',mr:'mr-IN',bn:'bn-IN',gu:'gu-IN',pa:'pa-IN',ur:'ur-IN',or:'or-IN',as:'as-IN'};
+function voiceLocale(){return voiceLocales[document.getElementById('language').value] || 'en-IN';}
+function speakInstructions(text){
+  if(!('speechSynthesis' in window)){voiceStatus.textContent='Read aloud is not supported in this browser. Try Chrome or your device accessibility settings.';return;}
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = voiceLocale(); utterance.rate = 0.9;
+  utterance.onstart=()=>voiceStatus.textContent='Reading aloud…';
+  utterance.onend=()=>voiceStatus.textContent='Finished reading aloud.';
+  utterance.onerror=()=>voiceStatus.textContent='Could not play voice. Check device sound and text-to-speech settings.';
+  window.speechSynthesis.speak(utterance);
+}
+document.getElementById('readPageBtn').addEventListener('click',()=>{
+  speakInstructions([
+    document.getElementById('heroTitle').innerText,
+    document.getElementById('heroText').innerText,
+    'To find blood, choose a blood group and say or enter your city or PIN code.',
+    'Use Search nearby or open Google Maps to find real places.',
+    'Important: this website shows demo records and does not have verified live blood stock.',
+    'For urgent needs, contact the treating hospital or a licensed blood bank immediately.'
+  ].join('. '));
+});
+document.getElementById('stopVoiceBtn').addEventListener('click',()=>{
+  if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  if(window.activeBloodRecognition){try{window.activeBloodRecognition.stop();}catch(e){}}
+  voiceStatus.textContent='Voice stopped.';
+});
+document.getElementById('voiceSearchBtn').addEventListener('click',()=>{
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!Recognition){voiceStatus.textContent='Voice search is not supported by this browser. Try Chrome on Android and allow microphone access, or use the regular search fields.';return;}
+  if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  const recognition = new Recognition();
+  window.activeBloodRecognition = recognition;
+  recognition.lang = voiceLocale(); recognition.continuous = false; recognition.interimResults = false;
+  voiceStatus.textContent='Listening… Say the blood group and city, for example “O positive in Bengaluru”.';
+  recognition.onresult=(event)=>{
+    const spoken = event.results[0][0].transcript || '';
+    let normalized = spoken.toLowerCase();
+    const phraseMap = [
+      [/\b(ab)\s*positive\b/g,'AB+'],[/\b(ab)\s*negative\b/g,'AB-'],
+      [/\b(a)\s*positive\b/g,'A+'],[/\b(a)\s*negative\b/g,'A-'],
+      [/\b(b)\s*positive\b/g,'B+'],[/\b(b)\s*negative\b/g,'B-'],
+      [/\b(o|oh)\s*positive\b/g,'O+'],[/\b(o|oh)\s*negative\b/g,'O-']
+    ];
+    for(const [pattern,replacement] of phraseMap) normalized=normalized.replace(pattern,replacement);
+    const groups=['AB+','AB-','A+','A-','B+','B-','O+','O-'];
+    const found=groups.find(group=>normalized.toUpperCase().includes(group));
+    if(found) document.getElementById('bloodGroup').value=found;
+    document.getElementById('need').value=/\bdonor|donors|volunteer\b/i.test(spoken)?'donor':'bank';
+    let city=spoken
+      .replace(/\b(find|search|look for|need|please|blood|blood bank|blood banks|bank|banks|hospital|hospitals|near|nearby|in|at|city|donor|donors|volunteer|group|positive|negative|plus|minus|my|me)\b/gi,' ')
+      .replace(/\b(AB|A|B|O)\s*[+-]\b/gi,' ')
+      .replace(/\s+/g,' ').trim();
+    if(city && !/^(positive|negative|blood|bank|please|search|find)$/i.test(city)) document.getElementById('location').value=city;
+    render(); updateMapsLink();
+    document.getElementById('searchBtn').click();
+    voiceStatus.textContent='I heard: “'+spoken+'”. Check the group and location on screen. Demo listings are not verified; confirm availability directly.';
+    speakInstructions('Your search is prepared. Please check the blood group and location on the screen. The sample listings are not verified. Call the blood bank to confirm availability.');
+  };
+  recognition.onerror=(event)=>{
+    const messages={'not-allowed':'Microphone permission was denied. Allow microphone access in your browser settings.','no-speech':'No speech detected. Tap Speak to search and try again.','network':'Voice recognition needs an internet connection in this browser.','audio-capture':'No microphone was found. Check your device microphone.'};
+    voiceStatus.textContent=messages[event.error] || ('Voice search stopped. You can type your search instead.');
+  };
+  recognition.onend=()=>{window.activeBloodRecognition=null;};
+  try{recognition.start();}catch(e){voiceStatus.textContent='Could not start microphone. Wait a moment and try again.';}
+});
+
+function net(){const online=navigator.onLine;document.getElementById('networkStatus').textContent=online?'● Online — internet features available':'● Offline — saved app shell only';document.getElementById('networkStatus').className=online?'offline':''}
+window.addEventListener('online',net);window.addEventListener('offline',net);net();render();renderStock();
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+</script>
+</body>
+</html>
